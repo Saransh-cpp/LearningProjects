@@ -2,6 +2,8 @@ from classes.game import Person, bcolors
 from classes.magic import Spell
 from classes.inventory import Item
 
+print('\n\n')
+
 fire = Spell('Fire', 10, 100, 'black')
 thunder = Spell('Thunder', 10, 100, 'black')
 blizzard = Spell('Blizzard', 10, 100, 'black')
@@ -24,73 +26,85 @@ player_items = [{'item': potion, 'quantity': 15}, {'item': hipotion, 'quantity':
                 {'item': superpotion, 'quantity': 5}, {'item': elixir, 'quantity': 5},
                 {'item': hielixir, 'quantity': 5}, {'item': grenade, 'quantity': 5}]
 
-player = Person(460, 65, 60, 34, player_spells, player_items)
-enemy = Person(1200, 65, 45, 25, [], [])
+player1 = Person('Valos', 460, 65, 60, 34, player_spells, player_items)
+player2 = Person('Nick ', 460, 65, 60, 34, player_spells, player_items)
+player3 = Person('Robot', 460, 65, 60, 34, player_spells, player_items)
+
+enemy = Person('Magneto', 1200, 65, 45, 25, [], [])
+
+players = [player1, player2, player3]
 
 running = True
 
 print(bcolors.FAIL + bcolors.BOLD + "ALL ENEMY ATTACKS!" + bcolors.ENDC)
 
+
 while running:
     print('================================================')
-    player.choose_action()
+    print('NAME                      HP                                    MP')
+    for player in players:
+        player.get_stats()
 
-    choice = input('Choose Action\n')
-    index = int(choice) - 1
+    print('\n\n')
 
-    if index == 0:
-        dmg = player.generate_damage()
-        enemy.take_damage(dmg)
-        print('You attacked for', dmg, 'points of damage')
-    elif index == 1:
-        player.choose_magic()
-        magic_choice = int(input("Choose magic:\n")) - 1
+    for player in players:
+        player.choose_action()
+        choice = input('Choose Action\n')
+        index = int(choice) - 1
 
-        if magic_choice == -1:
-            continue
+        if index == 0:
+            dmg = player.generate_damage()
+            enemy.take_damage(dmg)
+            print('You attacked for', dmg, 'points of damage')
+        elif index == 1:
+            player.choose_magic()
+            magic_choice = int(input("Choose magic:\n")) - 1
 
-        spell = player.magic[magic_choice]
-        magic_dmg = spell.generate_damage()
+            if magic_choice == -1:
+                continue
 
-        current_mp = player.get_mp()
+            spell = player.magic[magic_choice]
+            magic_dmg = spell.generate_damage()
 
-        if spell.cost > current_mp:
-            print(bcolors.FAIL + '\nNot enough MP\n' + bcolors.ENDC)
-            continue
+            current_mp = player.get_mp()
 
-        player.reduce_mp(spell.cost)
+            if spell.cost > current_mp:
+                print(bcolors.FAIL + '\nNot enough MP\n' + bcolors.ENDC)
+                continue
 
-        if spell.type == 'white':
-            player.heal(magic_dmg)
-            print(bcolors.OKBLUE + '\n' + spell.name + " heals for", str(magic_dmg), "HP" + bcolors.ENDC)
-        elif spell.type == 'black':
-            enemy.take_damage(magic_dmg)
-            print(bcolors.OKBLUE + '\n' + spell.name + ' deals ' + str(magic_dmg), 'point of damage' + bcolors.ENDC)
-    elif index == 2:
-        player.choose_item()
-        item_choice = int(input('Choose item:\n')) - 1
+            player.reduce_mp(spell.cost)
 
-        if item_choice == -1:
-            continue
+            if spell.type == 'white':
+                player.heal(magic_dmg)
+                print(bcolors.OKBLUE + '\n' + spell.name + " heals for", str(magic_dmg), "HP" + bcolors.ENDC)
+            elif spell.type == 'black':
+                enemy.take_damage(magic_dmg)
+                print(bcolors.OKBLUE + '\n' + spell.name + ' deals ' + str(magic_dmg), 'point of damage' + bcolors.ENDC)
+        elif index == 2:
+            player.choose_item()
+            item_choice = int(input('Choose item:\n')) - 1
 
-        item = player.items[item_choice]['item']
+            if item_choice == -1:
+                continue
 
-        if player.items[item_choice]['quantity'] == 0:
-            print(bcolors.FAIL + '\n' + 'None left....' + bcolors.ENDC)
-            continue
+            item = player.items[item_choice]['item']
 
-        player.items[item_choice]['item'] -= 1
+            if player.items[item_choice]['quantity'] == 0:
+                print(bcolors.FAIL + '\n' + 'None left....' + bcolors.ENDC)
+                continue
 
-        if item.type == 'potion':
-            player.heal(item.prop)
-            print(bcolors.OKGREEN + '\n' + item.name + ' heals for', str(item.prop), 'HP' + bcolors.ENDC)
-        elif item.type == 'elixir':
-            player.hp = player.maxhp
-            player.mp = player.maxmp
-            print(bcolors.OKGREEN + '\n' + item.name + 'fully restores HP/MP' + bcolors.ENDC)
-        elif item.type == 'attack':
-            enemy.take_damage(item.prop)
-            print(bcolors.FAIL + '\n' + item.name + ' deals', str(item.prop), 'points of damage', bcolors.ENDC)
+            player.items[item_choice]['quantity'] -= 1
+
+            if item.type == 'potion':
+                player.heal(item.prop)
+                print(bcolors.OKGREEN + '\n' + item.name + ' heals for', str(item.prop), 'HP' + bcolors.ENDC)
+            elif item.type == 'elixir':
+                player.hp = player.maxhp
+                player.mp = player.maxmp
+                print(bcolors.OKGREEN + '\n' + item.name + 'fully restores HP/MP' + bcolors.ENDC)
+            elif item.type == 'attack':
+                enemy.take_damage(item.prop)
+                print(bcolors.FAIL + '\n' + item.name + ' deals', str(item.prop), 'points of damage', bcolors.ENDC)
 
     enemy_choice = 1
     enemy_dmg = enemy.generate_damage()
@@ -99,8 +113,6 @@ while running:
 
     print('=================================================')
     print('Enemy HP:', bcolors.FAIL + str(enemy.get_hp()) + '/' + str(enemy.get_max_hp()) + bcolors.ENDC + '\n')
-    print('Your HP:', bcolors.OKGREEN + str(player.get_hp()) + '/' + str(player.get_max_hp()) + bcolors.ENDC + '\n')
-    print('Your MP:', bcolors.FAIL + str(player.get_mp()) + '/' + str(player.get_max_mp()) + bcolors.ENDC + '\n')
 
     if enemy.get_hp() == 0:
         print(bcolors.OKGREEN + 'You Win!' + bcolors.ENDC)

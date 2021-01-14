@@ -14,7 +14,8 @@ class bcolors:
 
 
 class Person:
-    def __init__(self, hp, mp, atk, df, mag, items):
+    def __init__(self, name, hp, mp, atk, df, mag, items):
+        self.name = name
         self.maxhp = hp
         self.hp = hp
         self.maxmp = mp
@@ -68,6 +69,7 @@ class Person:
 
     def choose_action(self):
         i = 1
+        print(bcolors.BOLD + self.name + bcolors.ENDC)
         print('Actions')
         for item in self.actions:
             print(str(i) + ':' + item)
@@ -91,3 +93,9 @@ class Person:
         for item in self.items:
             print(str(i) + '.', item['item'].name, ':', item['item'].description, ' (x ' + str(item['quantity']), ')')
             i += 1
+
+    def get_stats(self):
+        print('                          _________________________            __________')
+        print(bcolors.BOLD + self.name + ':           ' + str(self.hp) + '/' + str(self.maxhp) + ' |'
+              + bcolors.OKGREEN + '███████████████████      ' + bcolors.ENDC + bcolors.BOLD + '|     '
+              + str(self.mp) + '/' + str(self.maxmp) + '|' + bcolors.OKBLUE + '██████████' + bcolors.ENDC + '|')
