@@ -26,11 +26,11 @@ player_items = [{'item': potion, 'quantity': 15}, {'item': hipotion, 'quantity':
                 {'item': superpotion, 'quantity': 5}, {'item': elixir, 'quantity': 5},
                 {'item': hielixir, 'quantity': 5}, {'item': grenade, 'quantity': 5}]
 
-player1 = Person('Valos', 460, 65, 60, 34, player_spells, player_items)
-player2 = Person('Nick ', 460, 65, 60, 34, player_spells, player_items)
-player3 = Person('Robot', 460, 65, 60, 34, player_spells, player_items)
+player1 = Person('Valos', 500, 65, 60, 34, player_spells, player_items)
+player2 = Person('Nick ', 500, 65, 60, 34, player_spells, player_items)
+player3 = Person('Robot', 500, 65, 60, 34, player_spells, player_items)
 
-enemy = Person('Magneto', 1200, 65, 45, 25, [], [])
+enemy = Person('Magneto', 1200, 65, 215, 25, [], [])
 
 players = [player1, player2, player3]
 
@@ -108,7 +108,7 @@ while running:
 
     enemy_choice = 1
     enemy_dmg = enemy.generate_damage()
-    player.take_damage(enemy_dmg)
+    player1.take_damage(enemy_dmg)
     print('Enemy attacks for', enemy_dmg)
 
     print('=================================================')
@@ -117,7 +117,7 @@ while running:
     if enemy.get_hp() == 0:
         print(bcolors.OKGREEN + 'You Win!' + bcolors.ENDC)
         running = False
-    elif player.get_hp() == 0:
+    elif player1.get_hp() == 0:
         print(bcolors.FAIL + 'Your enemy has defeated you!' + bcolors.ENDC)
         running = False
 
