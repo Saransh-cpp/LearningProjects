@@ -1,12 +1,10 @@
 import tweepy
+from keys import Keys
 
-CONSUMER_KEY = 'EKMIwMtCfOgeDzO3maI92C6mb'
-CONSUMER_SECRET = 'N6rhCurG2KS0KAPk41DoRWDzZ4DjmiX2HCudOmAzrgK8sFYTqT'
-ACCESS_KEY = '897082004084146181-fgA285qRsn1k05vHHhQtqheTLFWI3Zi'
-ACCESS_SECRET = 'VKAJdmF4BIlsqA2Bw0eQQuhkB4Y2fLJmBTPTNFUchgnQd'
-
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+auth = tweepy.OAuthHandler(Keys.CONSUMER_KEY, Keys.CONSUMER_SECRET)
+auth.set_access_token(Keys.ACCESS_KEY, Keys.ACCESS_SECRET)
 api = tweepy.API(auth)
 
+mention = api.mentions_timeline
 
+print(type(mention))
