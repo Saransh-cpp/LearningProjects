@@ -4,26 +4,25 @@ import numpy as np
 from scipy import integrate
 
 def solve_lorenz(sigma=10.0, beta=8./3, rho=28.0):
-    """Plot a solution to the Lorenz differential equations."""
 
     max_time = 4.0
     N = 30
 
+    # Adding axes
     fig = plt.figure()
     ax = fig.add_axes([0, 0, 1, 1], projection='3d')
     ax.axis('on')
 
-    # prepare the axes limits
     ax.set_xlim((-25, 25))
     ax.set_ylim((-35, 35))
-    ax.set_zlim((5, 55))
+    ax.set_zlim((-25, 55))
+    # Axes set
     
     def lorenz_deriv(x_y_z, t0, sigma=sigma, beta=beta, rho=rho):
-        """Compute the time-derivative of a Lorenz system."""
         x, y, z = x_y_z
-        return [sigma * (y - x), x * (rho - z) - y, x * y - beta * z]
+        return [sigma * (y - x), x * (rho - z) - y, x * y - beta * z] # Returns system of equations
 
-    # Choose random starting points, uniformly distributed from -15 to 15
+    # Generate random starting points
     np.random.seed(1)
     x0 = -15 + 30 * np.random.random((N, 3))
 
@@ -46,3 +45,6 @@ def solve_lorenz(sigma=10.0, beta=8./3, rho=28.0):
     plt.show()
 
     return t, x_t
+
+
+# solve_lorenz()
