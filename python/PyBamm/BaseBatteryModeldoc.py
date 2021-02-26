@@ -5,8 +5,8 @@ import pybamm
 
 class Example():
     """
-    This is an example
-      Hello
+    - "solvent-diffusion limited":\
+          :class:`pybamm.sei.SolventDiffusionLimited`
     """
 
 print(Example.__doc__)
