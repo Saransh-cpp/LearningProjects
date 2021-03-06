@@ -11,6 +11,13 @@ const app = express();
 //   response.send({name : "Happy"})
 // })
 
+function middle (req, res, next) {
+  console.log("This is a middleware");
+  next();
+}
+
+app.use(middle);
+
 // app.use('/photos', express.static('photos'));
 
 app.get("/", function (req, res) {
