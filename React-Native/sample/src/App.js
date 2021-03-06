@@ -23,7 +23,8 @@ function App() {
       <button onClick={fetch}>fetch users</button>
       <div>
         {users.map((user, index) => {
-          return (<img key={index} src={user.avatar_url} style={{
+          return (
+            <img key={index} alt="text" src={user.avatar_url} style={{
             width: "200px",
             height: "200px"
           }} />
