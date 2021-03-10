@@ -179,5 +179,5 @@ def RGB_to_HSL(RGB):
     return from_range_1(HSL)
 
 
-RGB = np.array([0.99603944, 0.87347144, 0.24350795])
-print(HCL_to_RGB(RGB))
+RGB = np.array([0.50000000, 1.00000000, 2.00000000])
+print(RGB_to_HCL(RGB))
