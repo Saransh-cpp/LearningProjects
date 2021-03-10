@@ -1,8 +1,62 @@
 import colour
 import numpy as np
+# import numpy as np
+import unittest
+from itertools import permutations
+from colour import (domain_range_scale)
 
 from colour.utilities import (as_float_array, from_range_1, to_domain_1,
                               tsplit, tstack)
+
+def handle_numpy_errors(**kwargs):
+    """
+    Decorator for handling *Numpy* errors.
+
+    Other Parameters
+    ----------------
+    \\**kwargs : dict, optional
+        Keywords arguments.
+
+    Returns
+    -------
+    object
+
+    References
+    ----------
+    :cite:`Kienzle2011a`
+
+    Examples
+    --------
+    >>> import numpy
+    >>> @handle_numpy_errors(all='ignore')
+    ... def f():
+    ...     1 / numpy.zeros(3)
+    >>> f()
+    """
+
+    context = np.errstate(**kwargs)
+
+    def wrapper(function):
+        """
+        Wrapper for given function.
+        """
+
+        @functools.wraps(function)
+        def wrapped(*args, **kwargs):
+            """
+            Wrapped function.
+            """
+
+            with context:
+                return function(*args, **kwargs)
+
+        return wrapped
+
+    return wrapper
+
+
+ignore_numpy_errors = handle_numpy_errors(all='ignore')
+
 
 
 def RGB_to_HCL(RGB, gamma=3, Y_0=100):
@@ -177,6 +231,85 @@ def RGB_to_HSL(RGB):
     HSL = tstack([H, S, L])
 
     return from_range_1(HSL)
+
+
+# =====================TEST=========================================
+
+class TestRGB_to_HCL(unittest.TestCase):
+    """
+    Defines :func:`colour.models.rgb.cylindrical.RGB_to_HCL` definition unit
+    tests methods.
+    """
+
+    def test_RGB_to_HCL(self):
+        """
+        Tests :func:`colour.models.rgb.cylindrical.RGB_to_HCL` definition.
+        """
+
+        np.testing.assert_almost_equal(
+            RGB_to_HCL(np.array([0.45620519, 0.03081071, 0.04091952])),
+            np.array([-0.03167854, 0.2841715, 0.22859647]),
+            decimal=7)
+
+        np.testing.assert_almost_equal(
+            RGB_to_HCL(np.array([1.00000000, 2.00000000, 0.50000000])),
+            np.array([1.83120102, 1.0075282, 1.00941024]),
+            decimal=7)
+
+        np.testing.assert_almost_equal(
+            RGB_to_HCL(np.array([2.00000000, 1.00000000, 0.50000000])),
+            np.array([0.30909841, 1.0075282, 1.00941024]),
+            decimal=7)
+
+        np.testing.assert_almost_equal(
+            RGB_to_HCL(np.array([0.50000000, 1.00000000, 2.00000000])),
+            np.array([-2.40349351, 1.0075282, 1.00941024]),
+            decimal=7)
+
+    def test_n_dimensional_RGB_to_HCL(self):
+        """
+        Tests :func:`colour.models.rgb.cylindrical.RGB_to_HCL` definition
+        n-dimensional arrays support.
+        """
+
+        RGB = np.array([0.45620519, 0.03081071, 0.04091952])
+        HCL = RGB_to_HCL(RGB)
+
+        RGB = np.tile(RGB, (6, 1))
+        HCL = np.tile(HCL, (6, 1))
+        np.testing.assert_almost_equal(RGB_to_HCL(RGB), HCL, decimal=7)
+
+        RGB = np.reshape(RGB, (2, 3, 3))
+        HCL = np.reshape(HCL, (2, 3, 3))
+        np.testing.assert_almost_equal(RGB_to_HCL(RGB), HCL, decimal=7)
+
+    def test_domain_range_scale_RGB_to_HCL(self):
+        """
+        Tests :func:`colour.models.rgb.cylindrical.RGB_to_HCL` definition
+        domain and range scale support.
+        """
+
+        RGB = np.array([0.45620519, 0.03081071, 0.04091952])
+        HCL = RGB_to_HCL(RGB)
+
+        d_r = (('reference', 1), (1, 1), (100, 100))
+        for scale, factor in d_r:
+            with domain_range_scale(scale):
+                np.testing.assert_almost_equal(
+                    RGB_to_HCL(RGB * factor), HCL * factor, decimal=7)
+
+    @ignore_numpy_errors
+    def test_nan_RGB_to_HCL(self):
+        """
+        Tests :func:`colour.models.rgb.cylindrical.RGB_to_HCL` definition nan
+        support.
+        """
+
+        cases = [-1.0, 0.0, 1.0, -np.inf, np.inf, np.nan]
+        cases = set(permutations(cases * 3, r=3))
+        for case in cases:
+            RGB = np.array(case)
+            RGB_to_HCL(RGB)
 
 
 RGB = np.array([0.50000000, 1.00000000, 2.00000000])
