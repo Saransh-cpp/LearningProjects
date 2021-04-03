@@ -15,7 +15,7 @@ model = pybamm.lithium_ion.DFN()
 # solution = sim.solution
 
 # pybamm.dynamic_plot(solution)
-
+solver = pybamm.CasadiSolver(mode="fast with events")
 experiment = pybamm.Experiment(
     [
         ("Discharge at C/10 for 10 hours or until 3.3 V",
@@ -27,7 +27,7 @@ experiment = pybamm.Experiment(
     * 3,
 )
 
-sim = pybamm.Simulation(model, experiment=experiment)
+sim = pybamm.Simulation(model, experiment=experiment, solver=solver)
 sim.solve()
 sim.plot()
 # solution = sim.solution
