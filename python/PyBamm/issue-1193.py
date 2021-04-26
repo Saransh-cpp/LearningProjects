@@ -1,9 +1,13 @@
 import pybamm
 import pandas as pd
 import numpy as np
+from pprint import pprint
+from pybamm.q
 
 model = pybamm.lithium_ion.DFN()
-params = model.default_parameter_values
+params = model.parameters
+
+pprint(params)
 
 # drive_cycle = pd.read_csv("US06.csv", comment="#", header=None).to_numpy()
 
@@ -27,9 +31,9 @@ experiment = pybamm.Experiment(
     * 3,
 )
 
-sim = pybamm.Simulation(model, experiment=experiment)
+sim = pybamm.Simulation(model)
 print("yes")
-sim.solve()
+sim.solve([0, 3700])
 print("yes")
 sim.plot()
 # solution = sim.solution
