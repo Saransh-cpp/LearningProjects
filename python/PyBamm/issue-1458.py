@@ -54,29 +54,54 @@ from pprint import pprint
 
 # parameter_values["Current function [A]"] = my_current
 
-model = pybamm.lithium_ion.SPMe()
-model.parameters
+# model = pybamm.lithium_ion.SPMe()
+# model.parameters
 # sim = pybamm.Simulation(model, parameter_values=parameter_values)
 # t_eval = np.arange(0, 121, 1)
 # print(t_eval)
 # sim.solve([0, 3700])
 # sim.plot(["Current [A]", "Terminal voltage [V]"])
 
-values = {
-    "Particle radius [m]": 10e-6,
-    "Diffusion coefficient [m2.s-1]": 3.9e-14,
-    "Interfacial current density [A.m-2]": 1.4,
-    "Faraday constant [C.mol-1]": 96485,
-    "Initial concentration [mol.m-3]": 2.5e4,
+# values = {
+#     "Particle radius [m]": 10e-6,
+#     "Diffusion coefficient [m2.s-1]": 3.9e-14,
+#     "Interfacial current density [A.m-2]": 1.4,
+#     "Faraday constant [C.mol-1]": 96485,
+#     "Initial concentration [mol.m-3]": 2.5e4,
+# }
+
+# param = pybamm.ParameterValues(values)
+# print(param)
+
+# param.update(
+#     {
+#         "Particle radius [m]": 10e-7,
+#     }
+# )
+
+# print(param)
+
+# model = pybamm.lithium_ion.DFN()
+# chemistry = pybamm.parameter_sets.Marquis2019
+# parameter_values = pybamm.ParameterValues(chemistry=chemistry)
+
+# sim = pybamm.Simulation(model=model, parameter_values=parameter_values)
+
+# sim.solve([0, 3600])
+# sim.plot()
+
+mydict = {
+    1: {
+        "negative tab": (2),
+        "positive tab": (3),
+    }
 }
 
-param = pybamm.ParameterValues(values)
-print(param)
+keys = mydict.values()
+print(keys)
+for key in keys:
+    if isinstance(key, dict):
+        if "positive tab" in key.keys():
+            side_list = ["positive tab", "negative tab", "no tab"]
 
-param.update(
-    {
-        "Particle radius [m]": 10e-7,
-    }
-)
-
-print(param)
+print(side_list)
