@@ -144,43 +144,45 @@ from unittest.mock import patch, call
 #     geometry = pybamm.battery_geometry(current_collector_dimension=cc_dimension)
 #     print(geometry.print_parameter_info(test=True))
 
-# model = pybamm.BaseModel()
-# a = pybamm.Parameter("a")
-# b = pybamm.InputParameter("b", "test")
-# c = pybamm.Parameter("c")
-# d = pybamm.Parameter("d")
-# e = pybamm.Parameter("e")
-# f = pybamm.InputParameter("f")
-# g = pybamm.Parameter("g")
-# h = pybamm.Parameter("h")
-
-# u = pybamm.Variable("u")
-# v = pybamm.Variable("v")
-# model.rhs = {u: -u * a}
-# model.algebraic = {v: v - b}
-# model.initial_conditions = {u: c, v: d}
-# model.events = [pybamm.Event("u=e", u - e)]
-# model.variables = {"v+f": v + f}
-# model.boundary_conditions = {
-#     u: {"left": (g, "Dirichlet"), "right": (0, "Neumann")},
-#     v: {"left": (0, "Dirichlet"), "right": (h, "Neumann")},
-# }
-
-# model.variables = {
-#     "v+f": v + pybamm.FunctionParameter("f", {"Time [s]": pybamm.t})
-# }
-# model.print_parameter_info()
-
-var = pybamm.Variable("var")
 model = pybamm.BaseModel()
-model.algebraic = {var: var + pybamm.InputParameter("value")}
-model.initial_conditions = {var: 2}
+a = pybamm.Parameter("a")
+b = pybamm.InputParameter("b", "test")
+c = pybamm.Parameter("c")
+d = pybamm.Parameter("d")
+e = pybamm.Parameter("e")
+f = pybamm.InputParameter("f")
+g = pybamm.Parameter("g")
+h = pybamm.Parameter("h")
 
-        # create discretisation
-disc = pybamm.Discretisation()
-disc.process_model(model)
+u = pybamm.Variable("u")
+v = pybamm.Variable("v")
+model.rhs = {u: -u * a}
+model.algebraic = {v: v - b}
+model.initial_conditions = {u: c, v: d}
+model.events = [pybamm.Event("u=e", u - e)]
+model.variables = {"v+f": v + f}
+model.boundary_conditions = {
+    u: {"left": (g, "Dirichlet"), "right": (0, "Neumann")},
+    v: {"left": (0, "Dirichlet"), "right": (h, "Neumann")},
+}
 
-        # Solve
-solver = pybamm.AlgebraicSolver()
-solution = solver.solve(model, np.linspace(0, 1, 10), inputs={"value": 7})
+model.variables = {
+    "v+f": v + pybamm.FunctionParameter("f", {"Time [s]": pybamm.t})
+}
+from pprint import pprint
 model.print_parameter_info()
+pprint(model.parameters)
+
+# var = pybamm.Variable("var")
+# model = pybamm.BaseModel()
+# model.algebraic = {var: var + pybamm.InputParameter("value")}
+# model.initial_conditions = {var: 2}
+
+#         # create discretisation
+# disc = pybamm.Discretisation()
+# disc.process_model(model)
+
+#         # Solve
+# solver = pybamm.AlgebraicSolver()
+# solution = solver.solve(model, np.linspace(0, 1, 10), inputs={"value": 7})
+# model.print_parameter_info()
