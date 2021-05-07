@@ -13,7 +13,7 @@ function Header() {
 
       <img
         className="header_logo"
-        src="https://www.flaticon.com/svg/vstatic/svg/408/408739.svg?token=exp=1620249207~hmac=cd695fd574c903b400be2e982a247cec"
+        src="https://www.flaticon.com/svg/vstatic/svg/732/732251.svg?token=exp=1620323226~hmac=d939d6d9f8eb9b4d4fdacc9e601f83a4"
         alt="tinder-logo"
         height="20px"
       />
