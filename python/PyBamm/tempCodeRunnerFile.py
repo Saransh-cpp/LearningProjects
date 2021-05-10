@@ -1,3 +1,9 @@
-solution = sim.solve()
+model.print_parameter_info()
 
-# pybamm.dynamic_plot(solution)
+model.variables = {
+    "v+f": v + pybamm.FunctionParameter("f", {"Time [s]": pybamm.t})
+}
+from pprint import pprint
+pprint(model.parameters)
+
+model.print_parameter_info()

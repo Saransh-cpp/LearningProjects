@@ -165,13 +165,16 @@ model.boundary_conditions = {
     u: {"left": (g, "Dirichlet"), "right": (0, "Neumann")},
     v: {"left": (0, "Dirichlet"), "right": (h, "Neumann")},
 }
+model.print_parameter_info()
+pprint(model.parameters)
 
 model.variables = {
     "v+f": v + pybamm.FunctionParameter("f", {"Time [s]": pybamm.t})
 }
 from pprint import pprint
-model.print_parameter_info()
 pprint(model.parameters)
+
+model.print_parameter_info()
 
 # var = pybamm.Variable("var")
 # model = pybamm.BaseModel()
