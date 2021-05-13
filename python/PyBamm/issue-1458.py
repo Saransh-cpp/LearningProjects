@@ -153,6 +153,7 @@ e = pybamm.Parameter("e")
 f = pybamm.InputParameter("f")
 g = pybamm.Parameter("g")
 h = pybamm.Parameter("h")
+i = pybamm.InputParameter("i")
 
 u = pybamm.Variable("u")
 v = pybamm.Variable("v")
@@ -160,7 +161,7 @@ model.rhs = {u: -u * a}
 model.algebraic = {v: v - b}
 model.initial_conditions = {u: c, v: d}
 model.events = [pybamm.Event("u=e", u - e)]
-model.variables = {"v+f": v + f}
+model.variables = {"v+f+i": v + f + i}
 model.boundary_conditions = {
     u: {"left": (g, "Dirichlet"), "right": (0, "Neumann")},
     v: {"left": (0, "Dirichlet"), "right": (h, "Neumann")},
@@ -169,7 +170,7 @@ model.print_parameter_info()
 pprint(model.parameters)
 
 model.variables = {
-    "v+f": v + pybamm.FunctionParameter("f", {"Time [s]": pybamm.t})
+    "v+f+i": v + pybamm.FunctionParameter("f", {"Time [s]": pybamm.t}) + i
 }
 from pprint import pprint
 pprint(model.parameters)
