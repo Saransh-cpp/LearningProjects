@@ -2,23 +2,16 @@ import pybamm
 
 model = pybamm.BatchStudy(
     permutations=True,
-    models={"DFN": pybamm.lithium_ion.DFN(),
-        "SPM": pybamm.lithium_ion.SPM()
+    models={"Yang2017": pybamm.lithium_ion.DFN(),
+        "NewmanTobias": pybamm.lithium_ion.SPMe()
     },
-    parameter_values={"Chen2020": pybamm.ParameterValues(chemistry=pybamm.parameter_sets.Chen2020),
-    "Chen2020": pybamm.ParameterValues(chemistry=pybamm.parameter_sets.Chen2020)}
-    # solvers={"casadi safe": pybamm.CasadiSolver(mode="safe")}
     )
 
 model.solve(t_eval=[0, 3600])
 model.plot()
 
-dfn = pybamm.lithium_ion.DFN()
+model = pybamm.lithium_ion.Yang2017()
 
-parameter_values = pybamm.ParameterValues(chemistry=pybamm.parameter_sets.Chen2020)
-
-sim = pybamm.Simulation(model=dfn, parameter_values=parameter_values)
-
-sim.solve(t_eval=[0, 3600])
-
+sim = pybamm.Simulation(model)
+sim.solve([0, 3700])
 sim.plot()
