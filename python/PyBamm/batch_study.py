@@ -2,8 +2,8 @@ import pybamm
 
 model = pybamm.BatchStudy(
     permutations=True,
-    models={"Yang2017": pybamm.lithium_ion.DFN(),
-        "NewmanTobias": pybamm.lithium_ion.SPMe()
+    models={"0": pybamm.lithium_ion.DFN(),
+        "1": pybamm.lithium_ion.SPMe()
     },
     )
 
