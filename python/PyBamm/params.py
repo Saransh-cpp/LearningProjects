@@ -5,7 +5,8 @@ model = pybamm.lithium_ion.DFN()
 geometry = model.default_geometry
 
 # load parameter values and process model and geometry
-param = model.default_parameter_values
+model.print_parameter_info()
+param = model.parameters
 
 param.process_geometry(geometry)
 param.process_model(model)
