@@ -7,56 +7,72 @@ import threading
 from IPython.utils.capture import capture_output
 
 
-def foo():
-    print("Hellow world")
-    time.sleep(30)
+def wait_timeout(proc, seconds):
+    """Wait for a process to finish, or raise exception after timeout"""
+    start = time.time()
+    end = start + seconds
+    interval = min(seconds / 1000.0, .25)
 
-
-with capture_output() as c:
-    print('some output')
     while True:
-        p = threading.Thread(target=foo)
+        result = proc.poll()
+        if still_printing():
+            end = time.time() + 120
+        if result is not None:
+            return result
+        if time.time() >= end:
+            raise RuntimeError("Process timed out")
+        time.sleep(interval)
 
-        p.start()
-        p.join(5)
-
-        if p.is_alive():    # pragma: no cover
-            print(
-                "Simulation is taking too long, "
-                + "KILLING IT and starting a NEW ONE."
-            )
-            # p._stop()
-            p.join()
-        else:   # pragma: no cover
-            break
-    # print(c.stdout)
-
-c()
-
-# print(c.stdout)
+# def foo():
+#     print("Hellow world")
+#     time.sleep(30)
 
 
-# class Capturing(list):
-#     def __enter__(self):
-#         self._stdout = sys.stdout
-#         sys.stdout = self._stringio = StringIO()
-#         return self
-#     def __exit__(self, *args):
-#         self.extend(self._stringio.getvalue().splitlines())
-#         del self._stringio    # free up some memory
-#         sys.stdout = self._stdout
+# with capture_output() as c:
+#     print('some output')
+#     while True:
+#         p = threading.Thread(target=foo)
+
+#         p.start()
+#         p.join(5)
+
+#         if p.is_alive():    # pragma: no cover
+#             print(
+#                 "Simulation is taking too long, "
+#                 + "KILLING IT and starting a NEW ONE."
+#             )
+#             # p._stop()
+#             p.join()
+#         else:   # pragma: no cover
+#             break
+#     # print(c.stdout)
+
+# c()
+
+# # print(c.stdout)
 
 
-experiment = pybamm.Experiment(
-    [
-        ("Discharge at C/10 for 10 hours or until 3.3 V",
-        "Rest for 1 hour",
-        "Charge at 1 A until 4.1 V",
-        "Hold at 4.1 V until 50 mA",
-        "Rest for 1 hour")
-    ]
-    * 3,
-)
+# # class Capturing(list):
+# #     def __enter__(self):
+# #         self._stdout = sys.stdout
+# #         sys.stdout = self._stringio = StringIO()
+# #         return self
+# #     def __exit__(self, *args):
+# #         self.extend(self._stringio.getvalue().splitlines())
+# #         del self._stringio    # free up some memory
+# #         sys.stdout = self._stdout
+
+
+# experiment = pybamm.Experiment(
+#     [
+#         ("Discharge at C/10 for 10 hours or until 3.3 V",
+#         "Rest for 1 hour",
+#         "Charge at 1 A until 4.1 V",
+#         "Hold at 4.1 V until 50 mA",
+#         "Rest for 1 hour")
+#     ]
+#     * 3,
+# )
 
 # with Capturing() as output:
     # while True:
