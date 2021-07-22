@@ -29,3 +29,5 @@ experiment = {
 sim = pybamm.BatchStudy(model, parameter_values=params, experiments=experiment)
 sim.solve(calc_esoh=False)
 sim.plot()
+
+pybamm.print_citations()
