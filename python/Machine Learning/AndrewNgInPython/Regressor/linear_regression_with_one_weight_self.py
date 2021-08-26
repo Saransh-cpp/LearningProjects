@@ -1,10 +1,9 @@
-import time
 import numpy as np
 from sklearn import datasets
 import matplotlib.pyplot as plt
 
 
-class LinearRegressionWithOneFeature:
+class LinearRegressionWithOneWeight:
     def __init__(self, features, labels, alpha=0.01, initial_theta=0.0, debug=False):
         self.features = features
         self.labels = labels
@@ -123,7 +122,7 @@ if __name__ == "__main__":
     # feature_train = np.array([x[0] for x in temp])
     # labels_train = np.array([x[1] for x in temp])
 
-    linear_regression = LinearRegressionWithOneFeature(x, y, alpha=0.01, debug=True)
+    linear_regression = LinearRegressionWithOneWeight(x, y, alpha=0.01, debug=True)
     linear_regression.fit()
     # labels_predicted = linear_regression.predict(feature_test)
 
