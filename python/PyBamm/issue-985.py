@@ -21,9 +21,11 @@ parameter_values = pybamm.ParameterValues(chemistry=pybamm.parameter_sets.Chen20
 parameter_values["Current function [A]"] = 6
 sim = pybamm.Simulation(model, parameter_values=parameter_values)
 sim.solve([0, 3600])
-sim.plot()
+# sim.plot()
+# sim.solve([0, 3600], solver=pybamm.CasadiSolver(mode="safe"), inputs={"Crate": 1})
+# sim.plot()
 sim.interactive(
     [0, 3600],
-    inputs={"Current": 5},
+    inputs={"Current [A]": 1.5},
     plot_kwargs={"output_variables": ["Current [A]", "Terminal voltage [V]"]},
 )
