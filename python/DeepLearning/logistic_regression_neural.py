@@ -1,15 +1,15 @@
 import numpy as np
-from sklearn import datasets
+from sklearn.datasets import load_digits
 
 
 class LogisticRegression:
     """
     Logistic Regression using neural network.
-    
+
     Parameters
     ==========
     X : np.ndarray
-        Features to train a model. Should be of the form - 
+        Features to train a model. Should be of the form -
         [
             [feature1dataset1, feature1dataset2, .... feature1datasetn],
             [feature2dataset1, feature2dataset2, .... feature2datasetn],
@@ -18,20 +18,34 @@ class LogisticRegression:
     Y : np.ndarray
         Labels to train the model. Should be of the form -
         [
-            [label1],
-            [label2],
-            [label3]
+            label1,
+            label2,
+            label3
         ]
     alpha : numerical (optional)
         The learning rate to be used.
+    debug : bool
+        To print debug statements.
     """
-    def __init__(self, X, Y, alpha=0.05):
+
+    def __init__(self, X, Y, alpha=0.05, debug=False):
         self.X = X
         self.Y = Y
+        self.debug = debug
         self.alpha = alpha
         self.m = len(self.X)
 
     def fit(self):
+        """
+        Maths involved -
+        z = w.T * x + b
+        y_predicted = a = sigmoid(z)
+        dw += (1 / m) * x * dz
+        db += dz
+        Gradient descent -
+        w = w - α * dw
+        b = b - α * db
+        """
         self.J = 0
         self.J_last = 1
         dW = np.zeros(shape=(self.m, 1))
@@ -53,21 +67,26 @@ class LogisticRegression:
             self.W = self.W - self.alpha * dW
             self.b = self.b - self.alpha * db
 
-            print(self.J)
+            if self.debug:
+                print(self.J)
 
-            if abs(self.J - self.J_last) < 1e-3:
+            if abs(self.J - self.J_last) < 1e-5:
                 break
             else:
                 self.J_last = self.J
 
     def sigmoid(self, z):
+        """
+        Returns sigmoid value.
+        """
         return 1 / (1 + np.exp(-z))
 
     def predict(self, x):
+        """
+        Predicts the y values based on the training data.
+        """
         prediction = []
-
         for single_data in x:
-            print(self.sigmoid(np.dot(single_data, self.W) + self.b))
             prediction.append(
                 1 if self.sigmoid(np.dot(single_data, self.W) + self.b) > 0.5 else 0
             )
@@ -76,11 +95,21 @@ class LogisticRegression:
 
 
 if __name__ == "__main__":
-    data = datasets.load_iris()
+    digits = load_digits()
 
-    x_train = data.data[:-60]
-    y_train = data.target[:-60]
+    # preprocessing
+    x_train = digits.data[:-797].T
 
-    model = LogisticRegression(x_train.T, np.array([y_train]))
+    y = np.zeros(shape=(len(digits.target), 1))
+    for i in range(len(digits.target)):
+        if digits.target[i] == 2:
+            y[i] = 1
+        else:
+            y[i] = 0
+
+    y_train = y[:-797]
+
+    model = LogisticRegression(x_train, y_train.T, alpha=0.01, debug=True)
     model.fit()
-    print(model.predict(np.array([data.data[-100]])), data.target[-100])
+    pre = model.predict(np.array(digits.data[-797:])) - y[-797:].flatten()
+    print(np.where(pre != 0))
