@@ -3,6 +3,28 @@ from sklearn import datasets
 
 
 class LogisticRegression:
+    """
+    Logistic Regression using neural network.
+    
+    Parameters
+    ==========
+    X : np.ndarray
+        Features to train a model. Should be of the form - 
+        [
+            [feature1dataset1, feature1dataset2, .... feature1datasetn],
+            [feature2dataset1, feature2dataset2, .... feature2datasetn],
+            [feature3dataset1, feature3dataset2, .... feature3datasetn],
+        ]
+    Y : np.ndarray
+        Labels to train the model. Should be of the form -
+        [
+            [label1],
+            [label2],
+            [label3]
+        ]
+    alpha : numerical (optional)
+        The learning rate to be used.
+    """
     def __init__(self, X, Y, alpha=0.05):
         self.X = X
         self.Y = Y
@@ -10,8 +32,8 @@ class LogisticRegression:
         self.m = len(self.X)
 
     def fit(self):
-        J = 0
-        J_last = 1
+        self.J = 0
+        self.J_last = 1
         dW = np.zeros(shape=(self.m, 1))
         self.b = 0
         self.W = np.zeros(shape=(self.m, 1))
@@ -23,7 +45,7 @@ class LogisticRegression:
             dW = (1 / self.m) * (np.dot(self.X, dZ.T))
             db = (1 / self.m) * np.sum(dZ)
 
-            J = -np.sum(
+            self.J = -np.sum(
                 np.multiply(self.Y.T, np.array([np.log(x) for x in A.T]))
                 + np.multiply(1 - self.Y.T, np.array([np.log(1 - x) for x in A.T]))
             )
@@ -31,12 +53,12 @@ class LogisticRegression:
             self.W = self.W - self.alpha * dW
             self.b = self.b - self.alpha * db
 
-            print(J)
+            print(self.J)
 
-            if abs(J - J_last) < 1e-3:
+            if abs(self.J - self.J_last) < 1e-3:
                 break
             else:
-                J_last = J
+                self.J_last = self.J
 
     def sigmoid(self, z):
         return 1 / (1 + np.exp(-z))
