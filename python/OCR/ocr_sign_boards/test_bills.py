@@ -1,10 +1,38 @@
 import aiview_ocr
 import easyocr
-reader = easyocr.Reader(['en', 'hi']) # this needs to run only once to load the model into memory
-result = reader.readtext('roof-500x500.jpg')
+import cv2
 
-print(result)
-for _ in result:
+print(help(aiview_ocr.OCR))
 
-    print(_[1])
+
+languages = ['en', 'hi']
+path = "roof-500x500.jpg"
+ft = ""
+
+img = cv2.imread(path)
+reader = easyocr.Reader(
+    languages
+)  # slow for the first time (also depends upon CPU/GPU)
+result = reader.readtext(path)
+
+for text in result:
+
+    # extracting the coordinates to highlight the text
+    coords_lower = text[0][:2]
+    coords_upper = text[0][2:4]
+
+    coords_lower.sort(key=lambda x: x[0])
+    pt1 = [int(x) for x in coords_upper[-1]]
+
+    coords_lower.sort(key=lambda x: x[0])
+    pt2 = [int(x) for x in coords_lower[-1]]
+
+    cv2.rectangle(img, pt1, pt2, (0, 0, 255), 1)
+
+    ft = ft + " " + text[-2]
+
+cv2.imwrite("OCR.png", img)
+
+print(ft)
+
 
