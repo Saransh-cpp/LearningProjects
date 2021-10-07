@@ -5,16 +5,18 @@ import pytesseract
 from scipy import ndimage
 import aiview_ocr
 
-# img = cv2.imread("Bill3.jpg")
 
 ocr = aiview_ocr.OCR(
-    False,
-    "Bill4.jpg",
+    True,
+    "bills/1174-receipt.jpg",
     # r"D:\Saransh\Softwares\Tesseract-OCR\tesseract.exe"
 )
 
-text = ocr.ocr_sign_board()
+text = ocr.ocr_sparse_text(languages=["en"])
+
 print(text)
+
+print(ocr.process_extracted_text_from_invoice())
 
 # pre = Preprocessor("CosmosTwo.jpg")
 
