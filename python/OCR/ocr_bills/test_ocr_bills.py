@@ -5,15 +5,15 @@ import pytesseract
 from scipy import ndimage
 import aiview_ocr
 
-img = cv2.imread("Bill3.jpg")
+# img = cv2.imread("Bill3.jpg")
 
 ocr = aiview_ocr.OCR(
     False,
-    "CosmosTwo.jpg",
-    r"D:\Saransh\Softwares\Tesseract-OCR\tesseract.exe"
+    "Bill4.jpg",
+    # r"D:\Saransh\Softwares\Tesseract-OCR\tesseract.exe"
 )
 
-text = ocr.ocr_book()
+text = ocr.ocr_sign_board()
 print(text)
 
 # pre = Preprocessor("CosmosTwo.jpg")
