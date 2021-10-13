@@ -8,12 +8,13 @@ ocr = aiview_ocr.OCR(
     # "bills/1000-receipt.jpg",
     # "bills/1178-receipt.jpg",
     # "bills/1146-receipt.jpg",
-    "bills/1132-receipt.jpg",
+    # "bills/1132-receipt.jpg",
+    "Screenshot 2021-10-09 112620.png"
     # r"D:\Saransh\Softwares\Tesseract-OCR\tesseract.exe"
 )
 
-text = ocr.ocr_sparse_text(languages=["en"])
+text = ocr.ocr_sparse_text()
 
 print(text)
 
-print(ocr.process_extracted_text_from_invoice())
+# print(ocr.process_extracted_text_from_invoice())
