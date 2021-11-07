@@ -3,6 +3,6 @@ __pycache__
 node_modules
 .idea
 .ipynb_checkpoints
-loss.dat
-test.dat
-train.dat
+*/loss.dat
+*/test.dat
+*/train.dat
