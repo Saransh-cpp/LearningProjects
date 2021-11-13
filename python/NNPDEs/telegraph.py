@@ -32,6 +32,7 @@ bc = dde.DirichletBC(geomtime, lambda x: 0, lambda _, on_boundary: on_boundary)
 ic = dde.IC(
     geomtime,
     lambda x: np.sin(n * np.pi * x[:, 0:1] / L),
+    # lambda x: 0,
     lambda _, on_initial: on_initial,
 )
 
