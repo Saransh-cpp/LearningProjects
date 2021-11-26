@@ -1,0 +1,3 @@
+[submodule "SomeNotes"]
+	path = SomeNotes
+	url = https://github.com/Saransh-cpp/Notes.git
