@@ -20,7 +20,7 @@ def pde(x, u):
     """
     u_t = dde.grad.jacobian(u, x, i=0, j=1)
     u_xx = dde.grad.hessian(u, x, i=0, j=0)
-    u_tt = dde.grad.hessian(u, x, i=0, j=1)
+    u_tt = dde.grad.hessian(u, x, i=1, j=1)
     return u_tt + (a * u_t) + (b * u) - ((c ** 2) * u_xx)
 
 
@@ -35,11 +35,10 @@ timedomain = dde.geometry.TimeDomain(0, 1)
 geomtime = dde.geometry.GeometryXTime(geom, timedomain)
 
 # Initial and boundary conditions:
-bc = dde.DirichletBC(geomtime, lambda x: 1, lambda _, on_boundary: on_boundary)
-bc_r = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
+bc = dde.DirichletBC(geomtime, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), lambda _, on_boundary: on_boundary)
+# bc_r = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
 ic = dde.IC(
     geomtime,
-    # lambda x: np.sin(n * np.pi * x[:, 0:1] / L),
     lambda x: 0,
     lambda _, on_initial: on_initial,
 )
@@ -47,7 +46,7 @@ ic = dde.IC(
 data = dde.data.TimePDE(
     geomtime,
     pde,
-    [bc, bc_r, ic],
+    [bc, ic],
     num_domain=2540,
     num_boundary=80,
     num_initial=160,
