@@ -9,6 +9,9 @@ c = 0.1
 a = 0.1
 L = 1
 n = 1
+# alpha_1 = 1
+# alpha_2 = 1
+# c_n = 1
 
 
 def pde(x, u):
@@ -21,33 +24,35 @@ def pde(x, u):
     return u_tt + (a * u_t) + (b * u) - ((c ** 2) * u_xx)
 
 
+# def sol(x):
+#     x, t = np.split(x, 2, axis=1)
+#     return c_n * (np.exp(alpha_1 * t) - (alpha_1 / alpha_2) * np.exp(alpha_2 * t)) * np.sin(np.pi * x * L)
+
+
 # Computational geometry:
 geom = dde.geometry.Interval(0, L)
 timedomain = dde.geometry.TimeDomain(0, 1)
 geomtime = dde.geometry.GeometryXTime(geom, timedomain)
 
 # Initial and boundary conditions:
-bc = dde.DirichletBC(geomtime, lambda x: 0, lambda _, on_boundary: on_boundary)
-# bc_r = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
+bc = dde.DirichletBC(geomtime, lambda x: 1, lambda _, on_boundary: on_boundary)
+bc_r = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
 ic = dde.IC(
     geomtime,
-    lambda x: np.sin(n * np.pi * x[:, 0:1] / L),
-    # lambda x: 0,
+    # lambda x: np.sin(n * np.pi * x[:, 0:1] / L),
+    lambda x: 0,
     lambda _, on_initial: on_initial,
 )
 
 data = dde.data.TimePDE(
     geomtime,
     pde,
-    [
-        bc,
-        # bc_r,
-        ic
-    ],
+    [bc, bc_r, ic],
     num_domain=2540,
     num_boundary=80,
     num_initial=160,
     num_test=2540,
+    # solution=sol
 )
 net = dde.nn.FNN([2] + [20] * 3 + [1], "tanh", "Glorot normal")
 model = dde.Model(data, net)

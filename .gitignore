@@ -6,3 +6,4 @@ node_modules
 loss.dat
 test.dat
 train.dat
+.env
