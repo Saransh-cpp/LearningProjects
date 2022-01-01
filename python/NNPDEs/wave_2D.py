@@ -18,10 +18,10 @@ L = 1
 
 
 def pde(x, u):
-    u_t = dde.grad.jacobian(u, x, j=2)
+    u_tt = dde.grad.hessian(u, x, j=2)
     u_xx = dde.grad.hessian(u, x, i=0, j=0)
     u_yy = dde.grad.hessian(u, x, i=1, j=1)
-    return u_t - nu_ref * (u_xx + u_yy)
+    return u_tt - nu_ref * (u_xx + u_yy)
 
 
 # def func(x):
@@ -46,21 +46,15 @@ geomtime = dde.geometry.GeometryXTime(geom, timedomain)
 
 d_bc_l = dde.DirichletBC(geom, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_l)
 d_bc_r = dde.DirichletBC(geom, lambda x: 0, boundary_r)
-n_bc = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
-# ic = dde.IC(
-#     geom,
-#     lambda x: 0,
-#     lambda _, on_initial: on_initial,
-# )
+# n_bc = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
 
 data = dde.data.TimePDE(
     geomtime,
     pde,
     [
-        # d_bc_l,
+        d_bc_l,
         # d_bc_r,
-        # n_bc,
-        # ic
+        # n_bc
     ],
     num_domain=2540,
     num_boundary=80,
