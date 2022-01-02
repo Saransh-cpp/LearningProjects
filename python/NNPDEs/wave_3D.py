@@ -70,7 +70,7 @@ net = dde.nn.STMsFFN(
 model = dde.Model(data, net)
 
 model.compile("adam", lr=0.001)
-model.train(epochs=10000)
+model.train(epochs=20000)
 model.compile("L-BFGS")
 losshistory, train_state = model.train()
 
