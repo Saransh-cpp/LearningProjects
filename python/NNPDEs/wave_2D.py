@@ -18,7 +18,7 @@ L = 1
 
 
 def pde(x, u):
-    u_tt = dde.grad.hessian(u, x, j=2)
+    u_tt = dde.grad.hessian(u, x, i=2, j=2)
     u_xx = dde.grad.hessian(u, x, i=0, j=0)
     u_yy = dde.grad.hessian(u, x, i=1, j=1)
     return u_tt - nu_ref * (u_xx + u_yy)
@@ -32,29 +32,33 @@ def pde(x, u):
 #     )
 
 
-def boundary_r(x, on_boundary):
-    return on_boundary and np.isclose(x[:, 0:1], 1)
+def boundary_u(x, on_boundary):
+    return on_boundary and np.isclose(x[1], 1)
 
 
-def boundary_l(x, on_boundary):
-    return on_boundary and np.isclose(x[:, 0:1], 0)
+def boundary_b(x, on_boundary):
+    return on_boundary and np.isclose(x[1], 0)
+
+
+def boundary_r_and_l(x, on_boundary):
+    return on_boundary and (np.isclose(x[0], 0) or np.isclose(x[0], 1))
 
 
 geom = dde.geometry.Rectangle(xmin=[x_min, y_min], xmax=[x_max, y_max])
 timedomain = dde.geometry.TimeDomain(t_min, t_max)
 geomtime = dde.geometry.GeometryXTime(geom, timedomain)
 
-d_bc_l = dde.DirichletBC(geom, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_l)
-d_bc_r = dde.DirichletBC(geom, lambda x: 0, boundary_r)
-# n_bc = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
+d_bc_b = dde.DirichletBC(geomtime, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_b)
+d_bc_u = dde.DirichletBC(geomtime, lambda x: 0, boundary_u)
+n_bc = dde.NeumannBC(geomtime, lambda X: 0, boundary_r_and_l)
 
 data = dde.data.TimePDE(
     geomtime,
     pde,
     [
-        d_bc_l,
-        # d_bc_r,
-        # n_bc
+        d_bc_u,
+        d_bc_b,
+        n_bc
     ],
     num_domain=2540,
     num_boundary=80,

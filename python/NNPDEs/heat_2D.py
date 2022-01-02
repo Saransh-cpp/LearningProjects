@@ -48,9 +48,9 @@ geom = dde.geometry.Rectangle(xmin=[x_min, y_min], xmax=[x_max, y_max])
 timedomain = dde.geometry.TimeDomain(t_min, t_max)
 geomtime = dde.geometry.GeometryXTime(geom, timedomain)
 
-d_bc_b = dde.DirichletBC(geom, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_b)
-d_bc_u = dde.DirichletBC(geom, lambda x: 0, boundary_u)
-n_bc = dde.NeumannBC(geom, lambda X: 0, boundary_r_and_l)
+d_bc_b = dde.DirichletBC(geomtime, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_b)
+d_bc_u = dde.DirichletBC(geomtime, lambda x: 0, boundary_u)
+n_bc = dde.NeumannBC(geomtime, lambda X: 0, boundary_r_and_l)
 # ic = dde.IC(
 #     geom,
 #     lambda x: 0,
