@@ -7,12 +7,6 @@ from deepxde.backend import tf
 
 nu_ref = 0.1
 
-x_min = 0
-x_max = 1
-y_min = 0
-y_max = 1
-t_min = 0
-t_max = 1
 n = 1
 L = 1
 
@@ -44,27 +38,25 @@ def boundary_r_and_l(x, on_boundary):
     return on_boundary and (np.isclose(x[0], 0) or np.isclose(x[0], 1))
 
 
-geom = dde.geometry.Rectangle(xmin=[x_min, y_min], xmax=[x_max, y_max])
-timedomain = dde.geometry.TimeDomain(t_min, t_max)
-geomtime = dde.geometry.GeometryXTime(geom, timedomain)
+spatial_domain = dde.geometry.Rectangle(xmin=[0, 0], xmax=[1, 1])
+temporal_domain = dde.geometry.TimeDomain(0, 1)
+spatio_temporal_domain = dde.geometry.GeometryXTime(spatial_domain, temporal_domain)
 
-d_bc_b = dde.DirichletBC(geomtime, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_b)
-d_bc_u = dde.DirichletBC(geomtime, lambda x: 0, boundary_u)
-n_bc = dde.NeumannBC(geomtime, lambda X: 0, boundary_r_and_l)
-# ic = dde.IC(
-#     geom,
-#     lambda x: 0,
-#     lambda _, on_initial: on_initial,
-# )
+d_bc_b = dde.DirichletBC(
+    spatio_temporal_domain, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_b
+)
+d_bc_u = dde.DirichletBC(spatio_temporal_domain, lambda x: 0, boundary_u)
+n_bc = dde.NeumannBC(spatio_temporal_domain, lambda X: 0, boundary_r_and_l)
+ic = dde.IC(
+    spatio_temporal_domain,
+    lambda x: 0,
+    lambda _, on_initial: on_initial,
+)
 
 data = dde.data.TimePDE(
-    geomtime,
+    spatio_temporal_domain,
     pde,
-    [
-        d_bc_b,
-        d_bc_u,
-        n_bc,
-    ],
+    [d_bc_b, d_bc_u, n_bc, ic],
     num_domain=2540,
     num_boundary=80,
     num_initial=160,
@@ -75,15 +67,6 @@ layer_size = [3] + [32] * 3 + [1]
 activation = "tanh"
 initializer = "Glorot uniform"
 net = dde.maps.FNN(layer_size, activation, initializer)
-# net.apply_output_transform(
-#     lambda x, u: u
-#     * x[:, 2:3]
-#     * x[:, 0:1]
-#     * (1 - x[:, 0:1])
-#     * x[:, 1:2]
-#     * (1 - x[:, 1:2])
-#     + tf.sin(np.pi * x[:, 0:1]) * tf.sin(np.pi * x[:, 1:2])
-# )
 
 model = dde.Model(data, net)
 
