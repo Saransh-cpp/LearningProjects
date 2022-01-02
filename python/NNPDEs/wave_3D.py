@@ -11,10 +11,11 @@ L = 1
 
 
 def pde(x, u):
-    u_tt = dde.grad.hessian(u, x, i=2, j=2)
+    u_tt = dde.grad.hessian(u, x, i=3, j=3)
     u_xx = dde.grad.hessian(u, x, i=0, j=0)
     u_yy = dde.grad.hessian(u, x, i=1, j=1)
-    return u_tt - nu_ref * (u_xx + u_yy)
+    u_zz = dde.grad.hessian(u, x, i=2, j=2)
+    return u_tt - nu_ref * (u_xx + u_yy + u_zz)
 
 
 # def func(x):
@@ -37,7 +38,7 @@ def boundary_r_and_l(x, on_boundary):
     return on_boundary and (np.isclose(x[0], 0) or np.isclose(x[0], 1))
 
 
-spatial_domain = dde.geometry.Rectangle(xmin=[0, 0], xmax=[1, 1])
+spatial_domain = dde.geometry.Cuboid(xmin=[0, 0, 0], xmax=[1, 1, 1])
 temporal_domain = dde.geometry.TimeDomain(0, 1)
 spatio_temporal_domain = dde.geometry.GeometryXTime(spatial_domain, temporal_domain)
 
@@ -63,13 +64,13 @@ data = dde.data.TimePDE(
 )
 
 net = dde.nn.STMsFFN(
-    [3] + [20] * 3 + [1], "tanh", "Glorot uniform", sigmas_x=[1], sigmas_t=[1, 10]
+    [4] + [20] * 3 + [1], "tanh", "Glorot uniform", sigmas_x=[1], sigmas_t=[1, 10]
 )
 
 model = dde.Model(data, net)
 
 model.compile("adam", lr=0.001)
-model.train(epochs=20000)
+model.train(epochs=10000)
 model.compile("L-BFGS")
 losshistory, train_state = model.train()
 
