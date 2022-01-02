@@ -32,21 +32,25 @@ def pde(x, u):
 #     )
 
 
-def boundary_r(x, on_boundary):
-    return on_boundary and np.isclose(x[:, 0:1], 1)
+def boundary_u(x, on_boundary):
+    return on_boundary and np.isclose(x[1], 1)
 
 
-def boundary_l(x, on_boundary):
-    return on_boundary and np.isclose(x[:, 0:1], 0)
+def boundary_b(x, on_boundary):
+    return on_boundary and np.isclose(x[1], 0)
+
+
+def boundary_r_and_l(x, on_boundary):
+    return on_boundary and (np.isclose(x[0], 0) or np.isclose(x[0], 1))
 
 
 geom = dde.geometry.Rectangle(xmin=[x_min, y_min], xmax=[x_max, y_max])
 timedomain = dde.geometry.TimeDomain(t_min, t_max)
 geomtime = dde.geometry.GeometryXTime(geom, timedomain)
 
-d_bc_l = dde.DirichletBC(geom, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_l)
-d_bc_r = dde.DirichletBC(geom, lambda x: 0, boundary_r)
-n_bc = dde.NeumannBC(geom, lambda X: 0, lambda _, on_boundary: on_boundary)
+d_bc_b = dde.DirichletBC(geom, lambda x: np.sin(n * np.pi * x[:, 0:1] / L), boundary_b)
+d_bc_u = dde.DirichletBC(geom, lambda x: 0, boundary_u)
+n_bc = dde.NeumannBC(geom, lambda X: 0, boundary_r_and_l)
 # ic = dde.IC(
 #     geom,
 #     lambda x: 0,
@@ -57,10 +61,9 @@ data = dde.data.TimePDE(
     geomtime,
     pde,
     [
-        # d_bc_l,
-        # d_bc_r,
-        # n_bc,
-        # ic
+        d_bc_b,
+        d_bc_u,
+        n_bc,
     ],
     num_domain=2540,
     num_boundary=80,
@@ -68,7 +71,7 @@ data = dde.data.TimePDE(
     num_test=2540,
 )
 
-layer_size = [3] + [20] * 3 + [1]
+layer_size = [3] + [32] * 3 + [1]
 activation = "tanh"
 initializer = "Glorot uniform"
 net = dde.maps.FNN(layer_size, activation, initializer)
