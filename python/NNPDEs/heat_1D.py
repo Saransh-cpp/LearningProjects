@@ -3,11 +3,13 @@ import pandas as pd
 import deepxde as dde
 from deepxde.backend import tf
 import matplotlib.pyplot as plt
+from plot import scatter_plot_3D
 from dat_to_csv import dat_to_csv
 
 a = 0.4  # Thermal diffusivity
 L = 1  # Length of the bar
 n = 1  # Frequency of the sinusoidal initial conditions
+C = 1  # Fourier constant
 
 
 def func(x):
@@ -19,7 +21,7 @@ def func(x):
     # C is 1 -> Fourier sine series
     # check for "-" sign
     return (
-        1
+        C
         * np.exp(-(n ** 2 * np.pi ** 2 * a * t) / (L ** 2))
         * np.sin(n * np.pi * x / L)
     )
@@ -32,27 +34,6 @@ def pde(x, y):
     dy_t = dde.grad.jacobian(y, x, i=0, j=1)
     dy_xx = dde.grad.hessian(y, x, i=0, j=0)
     return dy_t - a * dy_xx
-
-
-def plot():
-    df = pd.read_csv("heat_1D_test.csv", usecols=["x", "t", "y_true", "y_pred"])
-    x = df["x"]
-    t = df["t"]
-    y_true = df["y_true"]
-    y_pred = df["y_pred"]
-
-    fig = plt.figure()
-    ax = plt.axes(projection="3d")
-
-    ax.scatter(x, y_pred, t, "green")
-
-    ax.scatter(x, y_true, t, cmap="viridis")
-
-    ax.set_xlabel("$x$")
-    ax.set_ylabel("$y$")
-    ax.set_zlabel(r"$t$")
-
-    plt.show()
 
 
 # Computational geometry:
@@ -98,5 +79,7 @@ losshistory, train_state = model.train()
 # Plot/print the results
 dde.saveplot(losshistory, train_state, issave=True, isplot=True)
 
-dat_to_csv("test.dat", "heat_1D_test.csv", ["x", "t", "y_true", "y_pred"])
-plot()
+dat_to_csv("test.dat", "heat_1D_test.csv", ["x", "t", "u_true", "u_pred"])
+scatter_plot_3D(
+    "heat_1D_test.csv", ["x", "t", "u_true", "u_pred"], "x", "t", "u_true", "u_pred"
+)
