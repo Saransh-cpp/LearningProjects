@@ -1,0 +1,3 @@
+include("./calc.jl")
+
+calc()

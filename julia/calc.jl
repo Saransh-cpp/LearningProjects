@@ -41,15 +41,21 @@ function operate(operator, list)
     end
 end
 
-print("Enter number of values: ")
-n = readline()
+function calc()
+    print("Enter number of values: ")
+    n = readline()
 
-println()
-nums = takeInput(n)
+    println()
+    nums = takeInput(n)
 
-println()
-print("Enter operator: ")
-op = readline()
-println()
+    println()
+    print("Enter operator: ")
+    op = readline()
+    println()
 
-println("Result: ", operate(op, nums))
+    println("Result: ", operate(op, nums))
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    calc()
+end
