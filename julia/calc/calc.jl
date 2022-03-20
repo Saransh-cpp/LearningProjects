@@ -59,3 +59,12 @@ end
 if abspath(PROGRAM_FILE) == @__FILE__
     calc()
 end
+
+t = Template(;
+    user="Saransh",
+    authors=["Saransh Chopra"],
+    license="MIT",
+    plugins=[
+        Codecov(),
+    ],
+)
