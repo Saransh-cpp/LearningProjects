@@ -26,3 +26,13 @@ https://cs.uwaterloo.ca/~plragde/flaneries/
 ## Martin's GitHub repos
 https://github.com/martinescardo
 
+## HoTT and UF
+https://www.cs.bham.ac.uk/~mhe/HoTT-UF-in-Agda-Lecture-Notes/HoTT-UF-Agda.html#contents
+
+## 1Lab
+https://1lab.dev
+
+## TOC with concentration on theory
+https://www.youtube.com/playlist?list=PLwF3A0R8OzMpO6_9WbT1kK16akYFh3_Nt
+https://hefferon.net/computation/
+
