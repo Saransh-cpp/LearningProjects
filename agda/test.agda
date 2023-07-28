@@ -1,4 +1,4 @@
-import Relation.Binary.PropositionalEquality as Eq
+Aimport Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_; refl; sym; trans; cong; cong₂; _≢_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_)
@@ -8,19 +8,9 @@ open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 infix   4  _∋_⦂_
--- infix   4  _⊢_↑_
--- infix   4  _⊢_↓_
 infixl  5  _,_⦂_
 
 infixr  7  _⇒_
-
--- infix   5  ƛ_⇒_
--- infix   5  μ_⇒_
--- infix   6  _↑
--- infix   6  _↓_
--- infixl  7  _·_
--- infix   8  `suc_
--- infix   9  `_
 
 Id : Set
 Id = String
@@ -53,24 +43,3 @@ ext∋ : ∀ {Γ B x y}
 ext∋ x≢y _  ⟨ A , Z ⟩       =  x≢y refl
 ext∋ _   ¬∃ ⟨ A , S _ ∋x ⟩  =  ¬∃ ⟨ A , ∋x ⟩
 
--- open import Data.Nat
--- open import Data.Rational
--- open import Data.Integer
-
--- x : ℕ
--- x = zero
-
--- y : ℚ
--- y = 0ℚ
-
--- z : ℤ
--- z = +0
-
--- open import Data.Nat.Show
-
--- open import Data.String
-
--- a : String
--- a = "Hello"
-
--- a !! 3

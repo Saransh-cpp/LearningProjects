@@ -36,3 +36,9 @@ https://1lab.dev
 https://www.youtube.com/playlist?list=PLwF3A0R8OzMpO6_9WbT1kK16akYFh3_Nt
 https://hefferon.net/computation/
 
+## James Wood page
+https://personal.cis.strath.ac.uk/james.wood.100/
+
+## The Syntax and Semantics of Quantitative Type Theory
+https://bentnib.org/quantitative-type-theory.html
+
