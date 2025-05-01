@@ -12,3 +12,5 @@ tf1/
 *.agda~
 MAlonzo
 .DS_Store
+*.out
+*a
