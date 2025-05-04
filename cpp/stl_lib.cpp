@@ -5,6 +5,15 @@
 #include <map>
 using namespace std;
 
+
+bool comp(pair<int, int> p1, pair<int, int> p2) {
+    if (p1.second < p2.second) return true;
+    if (p1.second > p2.second) return false;
+
+    if (p1.first > p2.first) return true;
+    return false;
+}
+
 int main() {
     // pairs
     // pair<int, int> p1 = {1, 3};
@@ -13,6 +22,7 @@ int main() {
     // cout << arr[0].first << " " << arr[0].second << endl;
 
     // vector<int> v = {1, 2, 3, 4, 5};
+    // v.reserve(20);  // reserve a chunk of memory, efficient (does not copy but limits elements to 20)
     // v.push_back(6);
     // v.emplace_back(7);
     // cout << "Vector: ";
@@ -152,6 +162,37 @@ int main() {
     // map<int, int> m;  // same as dict and set
     // multimap<int, int> mp;  // same as dict and multiset
     // unordered_map<int, int> mpp;  // same
+
+    vector<int> a = {1, 3, 4, 5, 2, 8, 7};
+    // sort(a.begin(), a.end());
+
+    // reverse sort
+    // sort(a.begin(), next(a.begin(), 2), greater<int>());
+    // for (auto el : a)
+    // {
+    //     cout << el << " ";
+    // }
+
+    // pair<int, int> p[] = {{8, 8}, {2, 3}, {4, 3}};
+    // sort(p, p+3, comp);
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     cout << p[i].first << " ";
+    // }
+
+    // int num = 7;
+    // int cnt = __builtin_popcount(num);  // return number of set bits
+
+    // long long num = 7483927563819;
+    // int llcnt = __builtin_popcountll(num);
+
+    // string s = "123";
+    // do
+    // {
+    //     cout << s << endl;
+    // } while (next_permutation(s.begin(), s.end())); // s must be sorted
+    
+    // int maxel = *max_element(a.begin(), a.end());
     
     return 0;
 }
