@@ -15,3 +15,4 @@ MAlonzo
 *.out
 *a
 *.o
+build/
