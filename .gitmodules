@@ -1,3 +1,6 @@
-[submodule "SomeNotes"]
-	path = SomeNotes
-	url = https://github.com/Saransh-cpp/Notes.git
+[submodule "Notes"]
+	path = Notes
+	url = https://github.com/Saransh-cpp/Notes
+[submodule "root_lib"]
+	path = root_lib
+	url = https://github.com/Saransh-cpp/root_lib
