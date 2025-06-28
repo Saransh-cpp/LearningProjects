@@ -7,9 +7,9 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Saransh-cpp/LearningProjects
+    repoURL: https://gitlab.com/nanuchi/argocd-app-config
     targetRevision: HEAD
-    path: kubernetes/argocd-app-config
+    path: dev
   destination: 
     server: https://kubernetes.default.svc
     namespace: myapp
