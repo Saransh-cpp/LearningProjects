@@ -16,3 +16,4 @@ MAlonzo
 *a
 *.o
 build/
+.terraform/
