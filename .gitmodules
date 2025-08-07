@@ -4,3 +4,6 @@
 [submodule "root_lib"]
 	path = root_lib
 	url = https://github.com/Saransh-cpp/root_lib
+[submodule "cpp/parallel/benchmark"]
+	path = cpp/parallel/benchmark
+	url = https://github.com/google/benchmark.git
